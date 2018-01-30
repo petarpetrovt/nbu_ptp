@@ -1,67 +1,102 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Serialization;
+using PTPSite.Services.Impl;
+using PTPSite.Web.Services;
+using DATABASE = PTPSite.Database;
+using SERVICES = PTPSite.Services;
 
 namespace PTPSite.Web
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration)
+		private IConfigurationRoot Configuration { get; }
+
+		private IHostingEnvironment HostingEnvironment { get; }
+
+		public Startup(IHostingEnvironment env)
 		{
-			Configuration = configuration;
+			IConfigurationBuilder builder = new ConfigurationBuilder()
+				.SetBasePath(basePath: env.ContentRootPath)
+				.AddJsonFile(path: "appsettings.json", optional: false, reloadOnChange: true)
+				.AddJsonFile(path: $"appsettings.{env.EnvironmentName}.json", optional: false, reloadOnChange: true)
+				.AddEnvironmentVariables();
+
+			Configuration = builder.Build();
+
+			HostingEnvironment = env;
 		}
 
-		public IConfiguration Configuration { get; }
-
-		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddDbContext<ApplicationDbContext>(options =>
-				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-			services.AddIdentity<ApplicationUser, IdentityRole>()
-				.AddEntityFrameworkStores<ApplicationDbContext>()
-				.AddDefaultTokenProviders();
-
-			services.AddMvc()
-				.AddRazorPagesOptions(options =>
+			services
+				.AddDbContext<DATABASE.ApplicationDbContext>(options =>
 				{
-					options.Conventions.AuthorizeFolder("/Account/Manage");
-					options.Conventions.AuthorizePage("/Account/Logout");
+					string connectionString = Configuration.GetConnectionString("DefaultConnection");
+					options.UseSqlServer(connectionString);
 				});
 
-			// Register no-op EmailSender used by account confirmation and password reset during development
-			// For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
-			services.AddSingleton<IEmailSender, EmailSender>();
+			services
+				.AddIdentity<SERVICES.ApplicationUser, ApplicationRole>(options =>
+				{
+					options.Password.RequireDigit = false;
+					options.Password.RequiredLength = 5;
+					options.Password.RequireNonAlphanumeric = false;
+					options.Password.RequireUppercase = false;
+					options.Password.RequireLowercase = false;
+					options.Password.RequiredUniqueChars = 2;
+				})
+				.AddUserStore<ApplicationUserStore>()
+				.AddRoleStore<ApplicationRoleStore>()
+				.AddDefaultTokenProviders();
+
+			services
+				.AddScoped<SERVICES.ICommentService, CommentService>()
+				.AddScoped<SERVICES.IUserService, UserService>();
+
+			services.AddAuthentication();
+
+			services.AddAuthorization(options =>
+			{
+				options.AddPolicy(nameof(SERVICES.ApplicationRole.Administrator), config =>
+				{
+					string roleName = Enum.GetName(typeof(SERVICES.ApplicationRole), SERVICES.ApplicationRole.Administrator);
+
+					config.RequireClaim(ApplicationRole.ClaimType, roleName);
+				});
+			});
+
+			services
+				.AddMemoryCache()
+				.AddResponseCompression()
+				.AddResponseCaching()
+				.AddMvc()
+				.AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 		}
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder application, IHostingEnvironment env)
 		{
 			if (env.IsDevelopment())
 			{
-				app.UseBrowserLink();
-				app.UseDeveloperExceptionPage();
-				app.UseDatabaseErrorPage();
-			}
-			else
-			{
-				app.UseExceptionHandler("/Error");
+				application.UseDeveloperExceptionPage();
+				application.UseBrowserLink();
+				application.UseDatabaseErrorPage();
 			}
 
-			app.UseStaticFiles();
-
-			app.UseAuthentication();
-
-			app.UseMvc();
+			application
+				.UseStaticFiles()
+				.UseAuthentication()
+				.UseMvc(routes =>
+				{
+					routes.MapRoute(
+						name: "default",
+						template: "{controller=Home}/{action=Index}/{id?}");
+				});
 		}
 	}
 }
