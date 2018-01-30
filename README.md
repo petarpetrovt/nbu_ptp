@@ -1,3 +1,3 @@
 # nbu_ptp
 
-Person ASP.NET Core web site for NBU
+Personal ASP.NET Core web site for NBU

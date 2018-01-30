@@ -6,8 +6,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\src\PTPSite.Database\PTPSite.Database.csproj" />
-	  <ProjectReference Include="..\src\PTPSite.Services\PTPSite.Services.csproj" />
+	  <ProjectReference Include="..\PTPSite.Database\PTPSite.Database.csproj" />
+	  <ProjectReference Include="..\PTPSite.Services\PTPSite.Services.csproj" />
 	</ItemGroup>
 
 </Project>
