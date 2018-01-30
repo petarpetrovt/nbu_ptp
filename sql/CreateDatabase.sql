@@ -1,0 +1,62 @@
+﻿SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- USERS table
+CREATE TABLE [dbo].[Users]
+(
+	[Id] INT IDENTITY(1,1) NOT NULL,
+	[Email] [nvarchar](256) NOT NULL,
+	[PasswordHash] [nvarchar](max) NOT NULL,
+	[UserName] [nvarchar](256) NOT NULL,
+	[NormalizedUserName] [nvarchar](256) NOT NULL,
+	[Role] INT NOT NULL,
+	[Name] [nvarchar](256) NULL,
+CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED
+(
+	[Id] ASC
+)
+	WITH
+	(
+		PAD_INDEX = OFF,
+		STATISTICS_NORECOMPUTE = OFF,
+		IGNORE_DUP_KEY = OFF,
+		ALLOW_ROW_LOCKS = ON,
+		ALLOW_PAGE_LOCKS = ON
+	) ON [PRIMARY]
+)
+GO
+
+-- COMMENTS table
+CREATE TABLE [dbo].[Comments]
+(
+	[Id] INT IDENTITY(1,1) NOT NULL,
+	[Text] NVARCHAR(256) NOT NULL,
+	[ByUserId] INT NOT NULL,
+	[Date] DATETIME NOT NULL,
+CONSTRAINT [PK_Comments] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)
+	WITH
+	(
+		PAD_INDEX = OFF,
+		STATISTICS_NORECOMPUTE = OFF,
+		IGNORE_DUP_KEY = OFF,
+		ALLOW_ROW_LOCKS = ON,
+		ALLOW_PAGE_LOCKS = ON
+	) ON [PRIMARY]
+)
+GO
+
+-- Foreign keys
+ALTER TABLE [dbo].[Comments] WITH CHECK
+ADD CONSTRAINT [FK_Comments_Users_ByUserId] FOREIGN KEY ([ByUserId])
+REFERENCES [dbo].[Users] ([Id])
+GO
+
+ALTER TABLE [dbo].[Comments]
+CHECK CONSTRAINT [FK_Comments_Users_ByUserId]
+GO

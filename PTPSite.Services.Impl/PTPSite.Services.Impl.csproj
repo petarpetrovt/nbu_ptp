@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netcoreapp2.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\src\PTPSite.Database\PTPSite.Database.csproj" />
+	  <ProjectReference Include="..\src\PTPSite.Services\PTPSite.Services.csproj" />
+	</ItemGroup>
+
+</Project>
