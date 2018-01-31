@@ -23,4 +23,9 @@
 		<ProjectReference Include="..\PTPSite.Services\PTPSite.Services.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="wwwroot\fonts\" />
+	  <Folder Include="wwwroot\images\" />
+	</ItemGroup>
+
 </Project>

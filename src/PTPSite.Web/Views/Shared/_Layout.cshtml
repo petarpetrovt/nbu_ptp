@@ -13,14 +13,15 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>@ViewData["Title"] - PTPSite.Web</title>
-
+	<title>@ViewData["Title"]</title>
 	<environment include="Development">
 		<link rel="stylesheet" href="~/css/superhero.css" asp-append-version="true" />
+		<link rel="stylesheet" href="~/css/devicons.css" asp-append-version="true" />
 		<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 	</environment>
 	<environment exclude="Development">
 		<link rel="stylesheet" href="~/css/superhero.min.css" asp-append-version="true" />
+		<link rel="stylesheet" href="~/css/devicons.min.css" asp-append-version="true" />
 		<link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
 	</environment>
 	<environment include="Development">
@@ -45,34 +46,22 @@
 					<span class="icon-bar"></span>
 				</button>
 				<a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">
-					PTPSite.Web
-					@{
-						if (HostingEnvironment.IsDevelopment())
-						{
-							<span>(Development)</span>
-						}
-					}
+					Petar <span style="color: #2b3e50; font-weight: bold;">Petrov</span>
+					@*@{
+							if (HostingEnvironment.IsDevelopment())
+							{
+								<span>(Development)</span>
+							}
+						}*@
 				</a>
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					@{
-						@*if (SignInManager.IsSignedIn(User))
-							{
-								ApplicationUser user = await UserManager.GetUserAsync(User);
-
-								if (user.Role == RoleType.Doctor)
-								{
-									<li><a asp-area="" asp-controller="Patient" asp-action="Index">@Localizer["Пациенти"]</a></li>
-									<li><a asp-area="" asp-controller="Appointment" asp-action="Index">@Localizer["Запазени часове"]</a></li>
-								}
-								else if (user.Role == RoleType.Patient)
-								{
-									<li><a asp-area="" asp-controller="Dentist" asp-action="Index">@Localizer["Зъболекари"]</a></li>
-									<li><a asp-area="" asp-controller="Appointment" asp-action="Index">@Localizer["Запазени часове"]</a></li>
-								}
-							}*@
-					}
+					<li><a asp-area="" asp-controller="Home" asp-action="Experience">EXPERIENCE</a></li>
+					<li><a asp-area="" asp-controller="Home" asp-action="Education">EDUCATION</a></li>
+					<li><a asp-area="" asp-controller="Home" asp-action="Skills">SKILLS</a></li>
+					<li><a asp-area="" asp-controller="Home" asp-action="Interests">INTERESTS</a></li>
+					<li><a asp-area="" asp-controller="Home" asp-action="Certifications">CERTIFICATIONS</a></li>
 				</ul>
 				@await Html.PartialAsync("_LoginPartial")
 			</div>
@@ -85,7 +74,6 @@
 			<p>&copy; 2017 - PTPSite.Web</p>
 		</footer>
 	</div>
-
 	@RenderSection("Scripts", required: false)
 </body>
 </html>

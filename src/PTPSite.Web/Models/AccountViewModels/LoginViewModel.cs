@@ -5,16 +5,16 @@ namespace PTPSite.Web.Models.AccountViewModels
 	public class LoginViewModel
 	{
 		[EmailAddress]
-		[Display]
+		[Display(Name = "Email")]
 		[Required]
 		public string Email { get; set; }
 
 		[DataType(DataType.Password)]
-		[Display]
+		[Display(Name = "Password")]
 		[Required]
 		public string Password { get; set; }
 
-		[Display]
+		[Display(Name = "Remember me?")]
 		public bool RememberMe { get; set; }
 	}
 }

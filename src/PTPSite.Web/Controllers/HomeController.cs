@@ -1,30 +1,49 @@
 ﻿using System.Diagnostics;
-using PTPSite.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using PTPSite.Web.Models;
 
 namespace PTPSite.Web.Controllers
 {
-	public class HomeController: Controller
+	[Route("")]
+	public class HomeController : Controller
 	{
+		[Route("")]
 		public IActionResult Index()
 		{
 			return View();
 		}
 
-		public IActionResult About()
+		[Route("experience")]
+		public IActionResult Experience()
 		{
-			ViewData["Message"] = "Your application description page.";
-
 			return View();
 		}
 
-		public IActionResult Contact()
+		[Route("education")]
+		public IActionResult Education()
 		{
-			ViewData["Message"] = "Your contact page.";
-
 			return View();
 		}
 
+		[Route("skills")]
+		public IActionResult Skills()
+		{
+			return View();
+		}
+
+		[Route("interests")]
+		public IActionResult Interests()
+		{
+			return View();
+		}
+
+		[Route("certifications")]
+		public IActionResult Certifications()
+		{
+			return View();
+		}
+
+		[Route("error")]
 		public IActionResult Error()
 		{
 			var viewModel = new ErrorViewModel
