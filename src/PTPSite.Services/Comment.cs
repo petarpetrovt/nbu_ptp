@@ -12,6 +12,6 @@ namespace PTPSite.Services
 
 		public int ByUserId { get; set; }
 
-		public string UserName { get; set; }
+		public string ByUserName { get; set; }
 	}
 }

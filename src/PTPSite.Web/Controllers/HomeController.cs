@@ -1,12 +1,27 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using PTPSite.Web.Models;
+using PTPSite.Services;
+using PTPSite.Web.Infrastructure;
+using PTPSite.Web.ViewModels;
+using PTPSite.Web.ViewModels.Comment;
+using PTPSite.Web.ViewModels.Home;
 
 namespace PTPSite.Web.Controllers
 {
 	[Route("")]
-	public class HomeController : Controller
+	public class HomeController : BaseController
 	{
+		private readonly ICommentService _commentService;
+
+		public HomeController(ICommentService commentService)
+		{
+			_commentService = commentService ?? throw new ArgumentNullException(nameof(commentService));
+		}
+
 		[Route("")]
 		public IActionResult Index()
 		{
@@ -52,6 +67,23 @@ namespace PTPSite.Web.Controllers
 			};
 
 			return View(viewModel);
+		}
+
+		[Route("discussion")]
+		public async Task<IActionResult> Discussion(CancellationToken cancellationToken = default)
+		{
+			Comment[] comments = await _commentService.List(cancellationToken);
+
+			CommentViewModel[] commentViewModels = comments
+				.Select(x => new CommentViewModel(x))
+				.ToArray();
+
+			var model = new DiscussionViewModel
+			{
+				Comments = commentViewModels,
+			};
+
+			return View(model);
 		}
 	}
 }

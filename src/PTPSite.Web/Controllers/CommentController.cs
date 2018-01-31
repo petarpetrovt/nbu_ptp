@@ -5,12 +5,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PTPSite.Services;
+using PTPSite.Web.Infrastructure;
 
 namespace PTPSite.Web.Controllers
 {
 	[Authorize]
 	[Route("comment")]
-	public class CommentController : Controller
+	public class CommentController : BaseController
 	{
 		private readonly ICommentService _commentService;
 		private readonly UserManager<ApplicationUser> _userManager;
@@ -21,19 +22,15 @@ namespace PTPSite.Web.Controllers
 			_userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
 		}
 
-		[Route("list")]
-		[AllowAnonymous]
-		public async Task<IActionResult> List(CancellationToken cancellationToken = default)
-		{
-			Comment[] comments = await _commentService.List(cancellationToken);
-
-			return Ok(comments);
-		}
-
 		[HttpPost]
 		[Route("create")]
-		public async Task<IActionResult> Create(string text, CancellationToken cancellationToken = default)
+		public async Task<IActionResult> Create([FromForm(Name = "text")] string text, CancellationToken cancellationToken = default)
 		{
+			if (string.IsNullOrEmpty(text) || text.Length < 10 || text.Length > 256)
+			{
+				return BadRequest();
+			}
+
 			ApplicationUser user = await _userManager.GetUserAsync(User);
 
 			if (user == null)
@@ -50,7 +47,7 @@ namespace PTPSite.Web.Controllers
 
 			await _commentService.Create(comment, cancellationToken);
 
-			return Ok();
+			return Refresh();
 		}
 	}
 }

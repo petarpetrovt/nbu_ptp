@@ -77,7 +77,7 @@ namespace PTPSite.Services.Impl
 				Id = value.Id,
 				Text = value.Text,
 				Date = value.Date,
-				UserName = userName,
+				ByUserName = userName,
 			};
 
 			return comment;

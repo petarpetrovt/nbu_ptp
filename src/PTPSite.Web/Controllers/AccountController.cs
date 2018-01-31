@@ -6,13 +6,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PTPSite.Services;
-using PTPSite.Web.Models.AccountViewModels;
+using PTPSite.Web.Infrastructure;
+using PTPSite.Web.ViewModels.Account;
 
 namespace PTPSite.Web.Controllers
 {
 	[Authorize]
 	[Route("account")]
-	public class AccountController : Controller
+	public class AccountController : BaseController
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly SignInManager<ApplicationUser> _signInManager;
@@ -120,35 +121,5 @@ namespace PTPSite.Web.Controllers
 
 			return RedirectToAction(nameof(HomeController.Index), "Home");
 		}
-
-		//[HttpGet]
-		//public IActionResult AccessDenied()
-		//{
-		//	return View();
-		//}
-
-		#region Helpers
-
-		private void AddErrors(IdentityResult result)
-		{
-			foreach (var error in result.Errors)
-			{
-				ModelState.AddModelError(string.Empty, error.Description);
-			}
-		}
-
-		private IActionResult RedirectToLocal(string returnUrl)
-		{
-			if (Url.IsLocalUrl(returnUrl))
-			{
-				return Redirect(returnUrl);
-			}
-			else
-			{
-				return RedirectToAction(nameof(HomeController.Index), "Home");
-			}
-		}
-
-		#endregion
 	}
 }

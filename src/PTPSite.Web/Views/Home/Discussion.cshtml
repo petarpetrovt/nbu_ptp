@@ -1,0 +1,52 @@
+﻿@using PTPSite.Services
+@model DiscussionViewModel
+@inject SignInManager<ApplicationUser> Manager
+@{
+	ViewData["Title"] = "DISCUSSION";
+}
+
+<h2>@ViewData["Title"]</h2>
+<br />
+@{
+	if (Manager.IsSignedIn(User))
+	{
+		<form asp-area="" asp-controller="Comment" asp-action="Create" method="post">
+			<hr />
+			<div asp-validation-summary="All" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="Text" style="font-size:20px;">Text</label>
+				<textarea asp-for="Text" class="form-control" rows="4"></textarea>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary">Add comment</button>
+			</div>
+		</form>
+	}
+	else
+	{
+		<div class="alert alert-info" role="alert">
+			Please <a style="font-weight: bold; color: #2b3e50; text-decoration:underline;" asp-area="" asp-controller="Account" asp-action="Login">login</a> if you want to add comments.
+		</div>
+	}
+}
+<div class="comments">
+	@{
+		foreach (CommentViewModel viewModel in Model.Comments)
+		{
+			<hr />
+			<div class="row row-comment">
+				<div class="col-md-2">
+					<span>@viewModel.ByUserName</span>
+					<br />
+					<span>@viewModel.Date</span>
+				</div>
+				<div class="col-md-6">
+					@viewModel.Text
+				</div>
+			</div>
+		}
+	}
+</div>
+@section Scripts {
+	@await Html.PartialAsync("_ValidationScriptsPartial")
+}

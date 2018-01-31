@@ -1,4 +1,4 @@
-namespace PTPSite.Web.Models
+namespace PTPSite.Web.ViewModels
 {
 	public class ErrorViewModel
 	{
