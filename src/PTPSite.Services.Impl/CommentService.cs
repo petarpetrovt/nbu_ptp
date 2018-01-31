@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using DATABASE = PTPSite.Database;
 
 namespace PTPSite.Services.Impl
@@ -37,9 +39,37 @@ namespace PTPSite.Services.Impl
 			}
 		}
 
+		public async Task<Comment[]> List(CancellationToken cancellationToken = default)
+		{
+			try
+			{
+				var entities = await (
+					from e in _context.Comments
+					join u in _context.Users
+						on e.ByUserId equals u.Id
+					orderby e.Date descending, u.Name
+					select new
+					{
+						Comment = e,
+						UserName = u.Name,
+					}
+				).ToArrayAsync(cancellationToken);
+
+				Comment[] comments = entities
+					.Select(x => ConvertComment(x.Comment, x.UserName))
+					.ToArray();
+
+				return comments;
+			}
+			catch (Exception ex)
+			{
+				throw new ServiceException($"Failed to list comments.", ex);
+			}
+		}
+
 		#endregion
 
-		private Comment ConvertComment(DATABASE.Comment value)
+		private Comment ConvertComment(DATABASE.Comment value, string userName = null)
 		{
 			var comment = new Comment
 			{
@@ -47,6 +77,7 @@ namespace PTPSite.Services.Impl
 				Id = value.Id,
 				Text = value.Text,
 				Date = value.Date,
+				UserName = userName,
 			};
 
 			return comment;

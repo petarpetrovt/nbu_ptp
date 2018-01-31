@@ -11,5 +11,7 @@ namespace PTPSite.Services
 		public DateTime Date { get; set; }
 
 		public int ByUserId { get; set; }
+
+		public string UserName { get; set; }
 	}
 }
