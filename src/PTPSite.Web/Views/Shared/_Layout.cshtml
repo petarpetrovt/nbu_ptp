@@ -20,18 +20,16 @@
 		<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 	</environment>
 	<environment exclude="Development">
-		<link rel="stylesheet" href="~/css/superhero.min.css" asp-append-version="true" />
-		<link rel="stylesheet" href="~/css/devicons.min.css" asp-append-version="true" />
 		<link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
 	</environment>
 	<environment include="Development">
 		<script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+		<script src="~/lib/jquery-validation/dist/jquery.validate.js" asp-append-version="true"></script>
+		<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
 		<script src="~/lib/bootstrap/dist/js/bootstrap.js" asp-append-version="true"></script>
 		<script src="~/js/site.js" asp-append-version="true"></script>
 	</environment>
 	<environment exclude="Development">
-		<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
-		<script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
 		<script src="~/js/site.min.js" asp-append-version="true"></script>
 	</environment>
 </head>
@@ -47,12 +45,6 @@
 				</button>
 				<a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">
 					Petar <span style="color: #2b3e50; font-weight: bold;">Petrov</span>
-					@*@{
-							if (HostingEnvironment.IsDevelopment())
-							{
-								<span>(Development)</span>
-							}
-						}*@
 				</a>
 			</div>
 			<div class="navbar-collapse collapse">
@@ -75,6 +67,5 @@
 			<p>Petar Petrov &copy; 2018 - PTPSite.Web</p>
 		</footer>
 	</div>
-	@RenderSection("Scripts", required: false)
 </body>
 </html>
