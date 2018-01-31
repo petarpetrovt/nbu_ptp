@@ -16,12 +16,10 @@
 	<title>@ViewData["Title"] - PTPSite.Web</title>
 
 	<environment include="Development">
-		<link rel="stylesheet" href="~/lib/jquery-ui-min/themes/base/jquery-ui.min.css" />
 		<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
 		<link rel="stylesheet" href="~/css/site.css" />
 	</environment>
 	<environment exclude="Development">
-		<link rel="stylesheet" href="~/lib/jquery-ui-min/themes/base/jquery-ui.min.css" asp-append-version="true" />
 		<link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
 			  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
 			  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
@@ -29,7 +27,6 @@
 	</environment>
 	<environment include="Development">
 		<script src="~/lib/jquery/dist/jquery.js"></script>
-		<script src="~/lib/jquery-ui-min/jquery-ui.min.js"></script>
 		<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
 		<script src="~/js/site.js" asp-append-version="true"></script>
 	</environment>
@@ -40,7 +37,6 @@
 				crossorigin="anonymous"
 				integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
 		</script>
-		<script src="~/lib/jquery-ui-min/jquery-ui.min.js"></script>
 		<script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
 				asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
 				asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
@@ -74,20 +70,20 @@
 				<ul class="nav navbar-nav">
 					@{
 						@*if (SignInManager.IsSignedIn(User))
-						{
-							ApplicationUser user = await UserManager.GetUserAsync(User);
+							{
+								ApplicationUser user = await UserManager.GetUserAsync(User);
 
-							if (user.Role == RoleType.Doctor)
-							{
-								<li><a asp-area="" asp-controller="Patient" asp-action="Index">@Localizer["Пациенти"]</a></li>
-								<li><a asp-area="" asp-controller="Appointment" asp-action="Index">@Localizer["Запазени часове"]</a></li>
-							}
-							else if (user.Role == RoleType.Patient)
-							{
-								<li><a asp-area="" asp-controller="Dentist" asp-action="Index">@Localizer["Зъболекари"]</a></li>
-								<li><a asp-area="" asp-controller="Appointment" asp-action="Index">@Localizer["Запазени часове"]</a></li>
-							}
-						}*@
+								if (user.Role == RoleType.Doctor)
+								{
+									<li><a asp-area="" asp-controller="Patient" asp-action="Index">@Localizer["Пациенти"]</a></li>
+									<li><a asp-area="" asp-controller="Appointment" asp-action="Index">@Localizer["Запазени часове"]</a></li>
+								}
+								else if (user.Role == RoleType.Patient)
+								{
+									<li><a asp-area="" asp-controller="Dentist" asp-action="Index">@Localizer["Зъболекари"]</a></li>
+									<li><a asp-area="" asp-controller="Appointment" asp-action="Index">@Localizer["Запазени часове"]</a></li>
+								}
+							}*@
 					}
 				</ul>
 				@await Html.PartialAsync("_LoginPartial")
@@ -96,10 +92,10 @@
 	</nav>
 	<div class="container body-content">
 		@RenderBody()
-		@*<hr />
-			<footer>
-				<p>&copy; 2017 - PTPSite.Web</p>
-			</footer>*@
+		<hr />
+		<footer>
+			<p>&copy; 2017 - PTPSite.Web</p>
+		</footer>
 	</div>
 
 	@RenderSection("Scripts", required: false)
