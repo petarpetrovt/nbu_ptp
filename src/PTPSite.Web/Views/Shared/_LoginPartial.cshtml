@@ -8,10 +8,10 @@
 	<form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
 		<ul class="nav navbar-nav navbar-right">
 			<li>
-				<a href="javascript: void(0)">Hello <span style="font-weight: bold;">@UserManager.GetUserName(User)</span></a>
+				<a href="javascript: void(0)">HELLO <span style="font-weight: bold;">@UserManager.GetUserName(User)</span></a>
 			</li>
 			<li>
-				<button type="submit" class="btn btn-link">Exit</button>
+				<button type="submit" class="btn btn-link">EXIT</button>
 			</li>
 		</ul>
 	</form>
@@ -19,7 +19,7 @@
 else
 {
 	<ul class="nav navbar-nav navbar-right">
-		<li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
-		<li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
+		<li><a asp-area="" asp-controller="Account" asp-action="Register">REGISTER</a></li>
+		<li><a asp-area="" asp-controller="Account" asp-action="Login">LOGIN</a></li>
 	</ul>
 }
