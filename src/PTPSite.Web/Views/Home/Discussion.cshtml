@@ -10,7 +10,7 @@
 @{
 	if (Manager.IsSignedIn(User))
 	{
-		<form asp-area="" asp-controller="Comment" asp-action="Create" method="post">
+		<form id="createForm" asp-area="" asp-controller="Comment" asp-action="Create" method="post">
 			<hr />
 			<div asp-validation-summary="All" class="text-danger"></div>
 			<div class="form-group">
@@ -19,6 +19,19 @@
 			</div>
 			<div class="form-group">
 				<button type="submit" class="btn btn-primary">Add comment</button>
+			</div>
+		</form>
+		<form id="editForm" asp-area="" asp-controller="Comment" asp-action="Edit" method="post" style="display: none;">
+			<input id="editId" name="id" style="display: none;" />
+			<hr />
+			<div asp-validation-summary="All" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="TextEdit" style="font-size:20px;">Text</label>
+				<textarea asp-for="TextEdit" name="text" class="form-control" rows="4"></textarea>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary">Edit comment</button>
+				<button id="editCancel" type="button" class="btn btn-primary">Cancel</button>
 			</div>
 		</form>
 	}
@@ -43,7 +56,40 @@
 				<div class="col-md-6">
 					@viewModel.Text
 				</div>
+				<div class="col-md-2 col-md-offset-2" style="text-align: right;">
+					@if (Manager.IsSignedIn(User) && viewModel.ByUserId == Model.UserId.Value)
+					{
+						<a id="editLink" href="javascript: void(0)" data-id="@viewModel.Id" data-text="@viewModel.Text">Edit</a>
+						<form asp-area="" asp-controller="Comment" asp-action="Remove" method="post" style="display: inline-block;">
+							<input name="id" value="@viewModel.Id" style="display:none;" />
+							<button type="submit" class="btn-link">Remove</button>
+						</form>
+					}
+				</div>
 			</div>
 		}
 	}
 </div>
+<script>
+	$(function () {
+		var editForm = $("#editForm");
+		var createForm = $("#createForm");
+		var editCancel = $("#editCancel");
+
+		$("#editLink").on("click", function () {
+			createForm.hide();
+			editForm.show();
+
+			var id = $(this).data("id");
+			var text = $(this).data("text");
+
+			editForm.find("#editId").val(id);
+			editForm.find("#TextEdit").val(text);
+		});
+
+		editCancel.on("click", function () {
+			editForm.hide();
+			createForm.show();
+		});
+	});
+</script>

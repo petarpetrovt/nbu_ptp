@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PTPSite.Services;
 using PTPSite.Web.Infrastructure;
@@ -16,10 +17,12 @@ namespace PTPSite.Web.Controllers
 	public class HomeController : BaseController
 	{
 		private readonly ICommentService _commentService;
+		private readonly UserManager<ApplicationUser> _userManager;
 
-		public HomeController(ICommentService commentService)
+		public HomeController(ICommentService commentService, UserManager<ApplicationUser> userManager)
 		{
 			_commentService = commentService ?? throw new ArgumentNullException(nameof(commentService));
+			_userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
 		}
 
 		[Route("")]
@@ -78,9 +81,12 @@ namespace PTPSite.Web.Controllers
 				.Select(x => new CommentViewModel(x))
 				.ToArray();
 
+			ApplicationUser user = await _userManager.GetUserAsync(User);
+
 			var model = new DiscussionViewModel
 			{
 				Comments = commentViewModels,
+				UserId = user?.Id,
 			};
 
 			return View(model);

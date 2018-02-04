@@ -39,6 +39,75 @@ namespace PTPSite.Services.Impl
 			}
 		}
 
+		public async Task Edit(Comment comment, CancellationToken cancellationToken)
+		{
+			if (comment == null)
+			{
+				throw new ArgumentNullException(nameof(comment));
+			}
+
+			try
+			{
+				DATABASE.Comment dbComment = await _context.Comments
+					.FirstOrDefaultAsync(x => x.Id == comment.Id);
+
+				if (dbComment == null)
+				{
+					throw new ServiceException("Invalid comment to edit");
+				}
+
+				dbComment.Text = comment.Text;
+				dbComment.Date = DateTime.Now;
+
+				await _context.SaveChangesAsync(cancellationToken);
+			}
+			catch (Exception ex)
+			{
+				throw new ServiceException($"Failed to edit comment.", ex);
+			}
+		}
+
+		public async Task<Comment> Get(int id, CancellationToken cancellationToken)
+		{
+			try
+			{
+				DATABASE.Comment dbComment = await _context.Comments
+					.FirstOrDefaultAsync(x => x.Id == id);
+
+				if (dbComment == null)
+				{
+					throw new ServiceException("Invalid comment to get");
+				}
+
+				return ConvertComment(dbComment);
+			}
+			catch (Exception ex)
+			{
+				throw new ServiceException($"Failed to get comment.", ex);
+			}
+		}
+
+		public async Task Remove(int id, CancellationToken cancellationToken)
+		{
+			try
+			{
+				DATABASE.Comment dbComment = await _context.Comments
+					.FirstOrDefaultAsync(x => x.Id == id);
+
+				if (dbComment == null)
+				{
+					throw new ServiceException("Invalid comment to remove");
+				}
+
+				_context.Comments.Remove(dbComment);
+				await _context.SaveChangesAsync(cancellationToken);
+			}
+			catch (Exception ex)
+			{
+				throw new ServiceException($"Failed to remove comment.", ex);
+			}
+		}
+
 		public async Task<Comment[]> List(CancellationToken cancellationToken = default)
 		{
 			try

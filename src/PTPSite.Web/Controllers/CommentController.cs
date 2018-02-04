@@ -49,5 +49,59 @@ namespace PTPSite.Web.Controllers
 
 			return Refresh();
 		}
+
+		[HttpPost]
+		[Route("edit")]
+		public async Task<IActionResult> Edit([FromForm(Name = "id")] int id, [FromForm(Name = "text")] string text, CancellationToken cancellationToken = default)
+		{
+			if (string.IsNullOrEmpty(text) || text.Length < 10 || text.Length > 256)
+			{
+				return BadRequest();
+			}
+
+			ApplicationUser user = await _userManager.GetUserAsync(User);
+
+			if (user == null)
+			{
+				throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+			}
+
+			Comment comment = await _commentService.Get(id, cancellationToken);
+
+			if (comment.ByUserId != user.Id)
+			{
+				return BadRequest();
+			}
+
+			comment.Text = text;
+			comment.Date = DateTime.Now;
+
+			await _commentService.Edit(comment, cancellationToken);
+
+			return Refresh();
+		}
+
+		[HttpPost]
+		[Route("remove")]
+		public async Task<IActionResult> Remove([FromForm(Name = "id")] int id, CancellationToken cancellationToken = default)
+		{
+			ApplicationUser user = await _userManager.GetUserAsync(User);
+
+			if (user == null)
+			{
+				throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+			}
+
+			Comment comment = await _commentService.Get(id, cancellationToken);
+
+			if (comment.ByUserId != user.Id)
+			{
+				return BadRequest();
+			}
+
+			await _commentService.Remove(id, cancellationToken);
+
+			return Refresh();
+		}
 	}
 }
