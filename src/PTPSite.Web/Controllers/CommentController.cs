@@ -52,8 +52,13 @@ namespace PTPSite.Web.Controllers
 
 		[HttpPost]
 		[Route("edit")]
-		public async Task<IActionResult> Edit([FromForm(Name = "id")] int id, [FromForm(Name = "text")] string text, CancellationToken cancellationToken = default)
+		public async Task<IActionResult> Edit([FromForm(Name = "id")] string id, [FromForm(Name = "text")] string text, CancellationToken cancellationToken = default)
 		{
+			if (id == null)
+			{
+				return BadRequest();
+			}
+
 			if (string.IsNullOrEmpty(text) || text.Length < 10 || text.Length > 256)
 			{
 				return BadRequest();
@@ -83,8 +88,13 @@ namespace PTPSite.Web.Controllers
 
 		[HttpPost]
 		[Route("remove")]
-		public async Task<IActionResult> Remove([FromForm(Name = "id")] int id, CancellationToken cancellationToken = default)
+		public async Task<IActionResult> Remove([FromForm(Name = "id")] string id, CancellationToken cancellationToken = default)
 		{
+			if (id == null)
+			{
+				return BadRequest();
+			}
+
 			ApplicationUser user = await _userManager.GetUserAsync(User);
 
 			if (user == null)

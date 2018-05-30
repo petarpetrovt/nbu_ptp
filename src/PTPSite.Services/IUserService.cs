@@ -10,7 +10,7 @@ namespace PTPSite.Services
 			CancellationToken cancellationToken = default);
 
 		Task<ApplicationUser> Get(
-			int id,
+			string id,
 			CancellationToken cancellationToken = default);
 
 		Task<ApplicationUser> GetNormalized(

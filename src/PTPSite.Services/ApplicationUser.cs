@@ -4,7 +4,7 @@ namespace PTPSite.Services
 {
 	public class ApplicationUser
 	{
-		public int Id { get; set; }
+		public string Id { get; set; }
 
 		public string PasswordHash { get; set; }
 

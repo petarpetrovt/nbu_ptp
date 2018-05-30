@@ -5,11 +5,11 @@ namespace PTPSite.Web.ViewModels.Comment
 {
 	public class CommentViewModel
 	{
-		public int Id { get; set; }
+		public string Id { get; set; }
 
 		public string Text { get; set; }
 
-		public int ByUserId { get; set; }
+		public string ByUserId { get; set; }
 
 		public string ByUserName { get; set; }
 

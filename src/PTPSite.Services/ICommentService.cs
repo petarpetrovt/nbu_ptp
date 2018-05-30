@@ -9,9 +9,9 @@ namespace PTPSite.Services
 
 		Task Edit(Comment comment, CancellationToken cancellationToken);
 
-		Task<Comment> Get(int id, CancellationToken cancellationToken);
+		Task<Comment> Get(string id, CancellationToken cancellationToken);
 
-		Task Remove(int id, CancellationToken cancellationToken);
+		Task Remove(string id, CancellationToken cancellationToken);
 
 		Task<Comment[]> List(CancellationToken cancellationToken);
 	}

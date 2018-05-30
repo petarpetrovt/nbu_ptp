@@ -67,8 +67,13 @@ namespace PTPSite.Services.Impl
 			}
 		}
 
-		public async Task<Comment> Get(int id, CancellationToken cancellationToken)
+		public async Task<Comment> Get(string id, CancellationToken cancellationToken)
 		{
+			if (id == null)
+			{
+				throw new ArgumentNullException(nameof(id));
+			}
+
 			try
 			{
 				DATABASE.Comment dbComment = await _context.Comments
@@ -87,8 +92,13 @@ namespace PTPSite.Services.Impl
 			}
 		}
 
-		public async Task Remove(int id, CancellationToken cancellationToken)
+		public async Task Remove(string id, CancellationToken cancellationToken)
 		{
+			if (id == null)
+			{
+				throw new ArgumentNullException(nameof(id));
+			}
+
 			try
 			{
 				DATABASE.Comment dbComment = await _context.Comments

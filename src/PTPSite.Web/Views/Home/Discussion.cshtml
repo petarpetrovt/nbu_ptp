@@ -57,7 +57,7 @@
 					@viewModel.Text
 				</div>
 				<div class="col-md-2 col-md-offset-2" style="text-align: right;">
-					@if (Manager.IsSignedIn(User) && viewModel.ByUserId == Model.UserId.Value)
+					@if (Manager.IsSignedIn(User) && viewModel.ByUserId == Model.UserId)
 					{
 						<a id="editLink" href="javascript: void(0)" data-id="@viewModel.Id" data-text="@viewModel.Text">Edit</a>
 						<form asp-area="" asp-controller="Comment" asp-action="Remove" method="post" style="display: inline-block;">

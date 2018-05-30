@@ -15,7 +15,7 @@ namespace PTPSite.Web.ViewModels.Home
 		[StringLength(256, MinimumLength = 10)]
 		public string TextEdit { get; set; }
 
-		public int? UserId { get; set; }
+		public string UserId { get; set; }
 
 		public CommentViewModel[] Comments { get; set; }
 	}

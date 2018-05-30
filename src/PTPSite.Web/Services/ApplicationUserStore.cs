@@ -35,9 +35,7 @@ namespace PTPSite.Web.Services
 		{
 			try
 			{
-				int id = int.Parse(userId);
-
-				ApplicationUser user = await _userService.Get(id, cancellationToken);
+				ApplicationUser user = await _userService.Get(userId, cancellationToken);
 
 				return user;
 			}

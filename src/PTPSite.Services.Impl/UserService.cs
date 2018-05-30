@@ -57,8 +57,13 @@ namespace PTPSite.Services.Impl
 			}
 		}
 
-		public async Task<ApplicationUser> Get(int id, CancellationToken cancellationToken = default)
+		public async Task<ApplicationUser> Get(string id, CancellationToken cancellationToken = default)
 		{
+			if (id == null)
+			{
+				throw new ArgumentNullException(nameof(id));
+			}
+
 			try
 			{
 				DATABASE.ApplicationUser dbUser = await _context.Users
@@ -76,6 +81,11 @@ namespace PTPSite.Services.Impl
 
 		public async Task<ApplicationUser> GetNormalized(string normalizedUserName, CancellationToken cancellationToken = default)
 		{
+			if (normalizedUserName == null)
+			{
+				throw new ArgumentNullException(nameof(normalizedUserName));
+			}
+
 			try
 			{
 				DATABASE.ApplicationUser dbUser = await _context.Users

@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace PTPSite.Database
 {
 	public class ApplicationUser
 	{
-		public int Id { get; set; }
+		public string Id { get; set; }
 
 		public string PasswordHash { get; set; }
 
@@ -21,5 +22,10 @@ namespace PTPSite.Database
 		public string Name { get; set; }
 
 		public ApplicationRole Role { get; set; }
+
+		public ApplicationUser()
+		{
+			Id = Guid.NewGuid().ToString();
+		}
 	}
 }
