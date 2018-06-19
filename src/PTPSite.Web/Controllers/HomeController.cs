@@ -18,11 +18,13 @@ namespace PTPSite.Web.Controllers
 	{
 		private readonly ICommentService _commentService;
 		private readonly UserManager<ApplicationUser> _userManager;
+		private readonly SignInManager<ApplicationUser> _signInManager;
 
-		public HomeController(ICommentService commentService, UserManager<ApplicationUser> userManager)
+		public HomeController(ICommentService commentService, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
 		{
 			_commentService = commentService ?? throw new ArgumentNullException(nameof(commentService));
 			_userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+			_signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
 		}
 
 		[Route("")]
@@ -75,13 +77,19 @@ namespace PTPSite.Web.Controllers
 		[Route("discussion")]
 		public async Task<IActionResult> Discussion(CancellationToken cancellationToken = default)
 		{
+			bool isLoggedIn = _signInManager.IsSignedIn(User);
+
+			ApplicationUser user = await _userManager.GetUserAsync(User);
+
 			Comment[] comments = await _commentService.List(cancellationToken);
 
 			CommentViewModel[] commentViewModels = comments
-				.Select(x => new CommentViewModel(x))
+				.Select(x => new CommentViewModel(x)
+				{
+					CanEdit = isLoggedIn && x.ByUserId == user.Id,
+					CanRemove = isLoggedIn && (x.ByUserId == user.Id || user.Role == ApplicationRole.Administrator),
+				})
 				.ToArray();
-
-			ApplicationUser user = await _userManager.GetUserAsync(User);
 
 			var model = new DiscussionViewModel
 			{

@@ -15,6 +15,10 @@ namespace PTPSite.Web.ViewModels.Comment
 
 		public DateTime Date { get; set; }
 
+		public bool CanEdit { get; set; }
+
+		public bool CanRemove { get; set; }
+
 		public CommentViewModel()
 		{
 

@@ -104,7 +104,7 @@ namespace PTPSite.Web.Controllers
 
 			Comment comment = await _commentService.Get(id, cancellationToken);
 
-			if (comment.ByUserId != user.Id)
+			if (user.Role != ApplicationRole.Administrator && comment.ByUserId != user.Id)
 			{
 				return BadRequest();
 			}
