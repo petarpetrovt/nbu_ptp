@@ -48,6 +48,17 @@ namespace PTPSite.Services.Impl
 
 				DATABASE.ApplicationUser dbUser = ConvertUser(user);
 
+				#region Ensure: First user Administrator
+
+				bool hasUser = await _context.Users.AnyAsync(cancellationToken);
+
+				if (!hasUser)
+				{
+					dbUser.Role = DATABASE.ApplicationRole.Administrator;
+				}
+
+				#endregion
+
 				await _context.Users.AddAsync(dbUser, cancellationToken);
 				await _context.SaveChangesAsync(cancellationToken);
 			}
